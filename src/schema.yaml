@@ -6,14 +6,14 @@
 
 openapi: 3.0.0
 info:
-  version: 1.0.7
-  title: Freelancer service API
-  description: API to consume JUAPP's freelancer services
+  version: 1.0.0
+  title: Juapp freelance-service API
+  description: API to consume JUAPP's freelancer-service
 servers:
   - description: Prod server
-    url: 'https://freelancer.juanvizcaino.com/'
+    url: 'https://freelancer.juanvizcaino.com/v1.0.0/'
   - description: Local server
-    url: 'http://0.0.0.0:8082/'
+    url: 'http://0.0.0.0:8082/v1.0.0/'
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -42,35 +42,584 @@ components:
                   - body
                   - header
                   - params
-    LoginRequest:
+    Client:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Tuix
         email:
           type: string
-          example: elvizcacho@gmail.com
           format: email
-        password:
+          example: dirk.mueller@tuix.com
+        phoneNumber:
           type: string
-          example: caruka123;
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
+        createdAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+    GetClients:
+      type: object
+      properties:
+        total:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+    CreateClientRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Tuix
+        email:
+          type: string
+          format: email
+          example: dirk.mueller@tuix.com
+        phoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
       required:
+        - name
         - email
-        - password
-    LoginResponse:
+        - phoneNumber
+        - street
+        - houseNumber
+        - postalCode
+        - city
+    UpdateClientRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Tuix
+        email:
+          type: string
+          format: email
+          example: dirk.mueller@tuix.com
+        phoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
+    Project:
       type: object
       properties:
         id:
           type: string
-        email:
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
           type: string
-    GetUserResponse:
+          example: Evia Full Stack Developer
+        startDate:
+          type: string
+          format: date
+          example: 2018-08-31T00:00:00.000Z
+        endDate:
+          type: string
+          format: date
+          example: 2018-04-01T00:00:00.000Z
+        onSiteHourlyRate:
+          type: number
+          example: 15
+        remoteHourlyRate:
+          type: number
+          example: 20
+        client:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        contactEmail:
+          type: string
+          format: email
+          example: dirk.muller@evia.de
+        contactPhoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        contactName:
+          type: string
+          example: Stefan Seltzer
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
+        description:
+          type: string
+          example: Software development services
+        paymentMonthDay:
+          type: integer
+          minimum: 1
+          maximum: 25
+          example: 21
+        createdAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+    GetProjects:
+      type: object
+      properties:
+        total:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    CreateProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Evia Full Stack Developer
+        startDate:
+          type: string
+          format: date
+          example: 2018-08-31T00:00:00.000Z
+        endDate:
+          type: string
+          format: date
+          example: 2018-04-01T00:00:00.000Z
+        onSiteHourlyRate:
+          type: number
+          example: 75
+        remoteHourlyRate:
+          type: number
+          example: 70
+        client:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        contactEmail:
+          type: string
+          format: email
+          example: dirk.muller@evia.de
+        contactPhoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        contactName:
+          type: string
+          example: Stefan Seltzer
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
+        description:
+          type: string
+          example: Software development services
+        paymentMonthDay:
+          type: integer
+          minimum: 1
+          maximum: 25
+          example: 21
+          default: 21
+      required:
+        - name
+        - startDate
+        - endDate
+        - onSiteHourlyRate
+        - remoteHourlyRate
+        - client
+        - contactEmail
+        - contactPhoneNumber
+        - contactName
+        - street
+        - houseNumber
+        - postalCode
+        - city
+        - description
+    UpdateProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Evia Full Stack Developer
+        startDate:
+          type: string
+          format: date
+          example: 2018-08-31T00:00:00.000Z
+        endDate:
+          type: string
+          format: date
+          example: 2018-04-01T00:00:00.000Z
+        onSiteHourlyRate:
+          type: number
+          example: 75
+        remoteHourlyRate:
+          type: number
+          example: 70
+        client:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        contactEmail:
+          type: string
+          format: email
+          example: dirk.muller@evia.de
+        contactPhoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        contactName:
+          type: string
+          example: Stefan Seltzer
+        street:
+          type: string
+          example: Bornemmanstraße
+        houseNumber:
+          type: string
+          example: 16A
+        postalCode:
+          type: string
+          pattern: '^\d{,6}$'
+          example: '70372'
+        city:
+          type: string
+          example: Stuttgart
+        description:
+          type: string
+          example: Software development services
+        paymentMonthDay:
+          type: integer
+          minimum: 1
+          maximum: 25
+          example: 21
+    User:
       type: object
       properties:
         id:
           type: string
-          example: a3bd01ff-d852-42f9-8087-771c87376044
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
         email:
           type: string
+          format: email
           example: elvizcacho@gmail.com
+        firstName:
+          type: string
+          example: Juan Sebastian
+        lastName:
+          type: string
+          format: date
+          example: Vizcaino Castro
+        phoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        street:
+          type: string
+          example: Apfelstrasse
+        houseNumber:
+          type: string
+          example: 77
+        postalCode:
+          type: string
+          example: 20372
+        city:
+          type: string
+          example: Leipzig
+        taxNumber:
+          type: string
+          pattern: '^\+?\d{,11}$'
+          example: '12345678901'
+        vatNumber:
+          type: string
+          example: DE310799711
+        iban:
+          type: string
+          example: DE98100110012629531111
+        bankName:
+          type: string
+          example: N26
+        bankAddressStreet:
+          type: string
+          example: Bornemanstrasse
+        bankAddressHouseNumber:
+          type: string
+          example: 23
+        bankAddressPostalCode:
+          type: string
+          example: 70372
+        bankAddressCity:
+          type: string
+          example: Stuttgart
+        bankSwiftCode:
+          type: string
+          example: NTSBDEB1XXX
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Juan Sebastian
+        email:
+          type: string
+          format: email
+          example: elvizcacho@gmail.com
+        lastName:
+          type: string
+          format: date
+          example: Vizcaino Castro
+        phoneNumber:
+          type: string
+          pattern: '^\+?\d{,20}$'
+          example: '+491638119136'
+        street:
+          type: string
+          example: Apfelstrasse
+        houseNumber:
+          type: string
+          example: 77
+        postalCode:
+          type: string
+          example: 20372
+        city:
+          type: string
+          example: Leipzig
+        taxNumber:
+          type: string
+          pattern: '^\+?\d{,11}$'
+          example: '12345678901'
+        vatNumber:
+          type: string
+          example: DE310799711
+        iban:
+          type: string
+          example: DE98100110012629531111
+        bankName:
+          type: string
+          example: N26
+        bankAddressStreet:
+          type: string
+          example: Bornemanstrasse
+        bankAddressHouseNumber:
+          type: string
+          example: 23
+        bankAddressPostalCode:
+          type: string
+          example: 70372
+        bankAddressCity:
+          type: string
+          example: Stuttgart
+        bankSwiftCode:
+          type: string
+          example: NTSBDEB1XXX
+    Timesheet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        project:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        lastName:
+          type: string
+          format: date
+          example: Vizcaino Castro
+        from:
+          type: string
+          format: date
+          example: 2020-01-21T00:00:00.000Z
+        to:
+          type: string
+          format: date
+          example: 2020-07-21T00:00:00.000Z
+        status:
+          type: string
+          enum:
+            - CLOSED
+            - OPEN
+        createdAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+    TimesheetEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        timesheet:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        date:
+          type: string
+          format: date
+          example: 2020-01-21T00:00:00.000Z
+        checkIn:
+          type: string
+          format: date-time
+          example: 2017-07-21T17:32:28.000Z
+        checkOut:
+          type: string
+          format: date-time
+          example: 2017-07-21T18:32:28.000Z
+        pause:
+          type: number
+          example: 60
+          description: pause in minutes
+        hours:
+          type: number
+          example: 8
+          description: worked hours
+        comments:
+          type: string
+          example: I worked on ticket PRIV-22
+        remote:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+    UpdateTimesheetRequest:
+      type: object
+      properties:
+        lastName:
+          type: string
+          format: date
+          example: Vizcaino Castro
+        from:
+          type: string
+          format: date
+          example: 2020-01-21T00:00:00.000Z
+        to:
+          type: string
+          format: date
+          example: 2020-07-21T00:00:00.000Z
+        status:
+          type: string
+          enum:
+            - CLOSED
+            - OPEN
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        timesheet:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        project:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        number:
+          type: string
+          example: 01082020
+        status:
+          type: string
+          enum:
+            - SENT
+            - PAID
+        createdAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2019-02-19T21:39:08.388Z
+    GetInvoicesResponse:
+      type: object
+      properties:
+        total:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+    DownloadInvoiceResponce:
+      type: string
+      format: binary
   responses:
     '400':
       description: Bad request
@@ -103,28 +652,32 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
 paths:
-  /login:
-    post:
-      summary: Logs into Evana's api
-      operationId: login
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
+  /clients:
+    get:
+      summary: Clients
+      operationId: getClients
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+          required: false
+          description: Items per page
+        - in: query
+          name: page
+          schema:
+            type: number
+          required: false
+          description: Page
       responses:
         '200':
-          description: LogIn was successful and a token is provided
-          headers:
-            x-juaapp-jwt:
-              schema:
-                type: string
-              description: JWT token
+          description: Get clients
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
+                $ref: '#/components/schemas/GetClients'
         '400':
           $ref: '#/components/responses/400'
         '404':
@@ -133,23 +686,616 @@ paths:
           $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
-  /user:
-    get:
-      summary: Get user
-      operationId: getUser
+    post:
+      summary: Create client
+      operationId: createClient
       security:
         - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientRequest'
       responses:
         '200':
-          description: User was successfully fetched
+          description: Client was created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetUserResponse'
+                $ref: '#/components/schemas/Client'
         '400':
           $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/clients/{id}':
+    get:
+      summary: Get client by id
+      operationId: getClientById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: client id
+      responses:
+        '200':
+          description: client was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    patch:
+      summary: Update client
+      operationId: updateClientById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: client id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClientRequest'
+      responses:
+        '200':
+          description: Client was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    delete:
+      summary: Delete client
+      operationId: deleteClientById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: client id
+      responses:
+        '204':
+          description: Client was deleted
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  /projects:
+    get:
+      summary: Projects
+      operationId: getProjects
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+          required: false
+          description: Items per page
+        - in: query
+          name: page
+          schema:
+            type: number
+          required: false
+          description: Page
+      responses:
+        '200':
+          description: Get projects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjects'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    post:
+      summary: Create project
+      operationId: createProject
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+      responses:
+        '200':
+          description: Project was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/projects/{id}':
+    get:
+      summary: Get project by id
+      operationId: getProjectById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: project id
+      responses:
+        '200':
+          description: project was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    patch:
+      summary: Update project
+      operationId: updateProjectById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: project id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectRequest'
+      responses:
+        '200':
+          description: Project was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    delete:
+      summary: Delete project
+      operationId: deleteProjectById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: project id
+      responses:
+        '204':
+          description: Project was deleted
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/users/{id}':
+    get:
+      summary: Get user by id
+      operationId: getUserById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: user id
+      responses:
+        '200':
+          description: user was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    patch:
+      summary: Update user
+      operationId: updateUserById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: user id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  /timesheets:
+    get:
+      summary: Get timesheets
+      operationId: getTimesheets
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+          required: false
+          description: Items per page
+        - in: query
+          name: page
+          schema:
+            type: number
+          required: false
+          description: Page
+        - in: query
+          name: project
+          schema:
+            type: string
+            format: uuid
+          required: false
+          description: project id
+      responses:
+        '200':
+          description: timesheets were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Timesheet'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/timesheets/{id}':
+    get:
+      summary: Get timesheet by id
+      operationId: getTimesheetById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: timesheet id
+      responses:
+        '200':
+          description: timesheet was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    patch:
+      summary: Update timesheet
+      operationId: updateTimesheetById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: timesheet id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTimesheetRequest'
+      responses:
+        '200':
+          description: Timesheet was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/timesheets/{id}/entries':
+    get:
+      summary: Get timesheet entries
+      operationId: getTimesheetEntriesById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: timesheet id
+      responses:
+        '200':
+          description: timesheet entries were successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimesheetEntry'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/timesheets/{id}/entries/{entryId}':
+    patch:
+      summary: Update timesheet entry
+      operationId: updateTimesheetEntryById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: timesheet id
+        - in: path
+          name: entryId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: entryId id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkIn:
+                  type: string
+                  format: date-time
+                  example: 2017-07-21T17:32:28.000Z
+                checkOut:
+                  type: string
+                  format: date-time
+                  example: 2017-07-21T18:32:28.000Z
+                pause:
+                  type: number
+                  example: 60
+                  description: pause in minutes
+                hours:
+                  type: number
+                  example: 8
+                  description: worked hours
+                comments:
+                  type: string
+                  example: I worked on ticket PRIV-22
+                remote:
+                  type: boolean
+                  example: false
+      responses:
+        '200':
+          description: Timesheet entry was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimesheetEntry'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  /invoices:
+    get:
+      summary: Get invoices
+      operationId: getInvoices
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+          required: false
+          description: Items per page
+        - in: query
+          name: page
+          schema:
+            type: number
+          required: false
+          description: Page
+      responses:
+        '200':
+          description: invoice  was successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInvoicesResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/invoices/{id}':
+    delete:
+      summary: Delete invoice
+      operationId: deleteInvoiceById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: invoice id
+      responses:
+        '204':
+          description: Invoice was deleted
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  '/invoices/{id}/download':
+    get:
+      summary: Download invoice
+      operationId: downloadInvoiceById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: invoice id
+      responses:
+        '200':
+          description: Invoice was downloaded
+          content:
+            application/pdf:
+              schema:
+                $ref: '#/components/schemas/DownloadInvoiceResponce'
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '500':
