@@ -1,0 +1,158 @@
+###############################################
+# THIS FILE IS GENERATED AUTOMATICALLY USING  #
+# build-documentation GULP TASK.              #
+# DO NOT MODIFY THIS FILE.                    #
+###############################################
+
+openapi: 3.0.0
+info:
+  version: 1.0.7
+  title: Freelancer service API
+  description: API to consume JUAPP's freelancer services
+servers:
+  - description: Prod server
+    url: 'https://freelancer.juanvizcaino.com/'
+  - description: Local server
+    url: 'http://0.0.0.0:8082/'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-juaapp-jwt
+  parameters: {}
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              msg:
+                type: string
+              param:
+                type: string
+              location:
+                type: string
+                enum:
+                  - body
+                  - header
+                  - params
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: elvizcacho@gmail.com
+          format: email
+        password:
+          type: string
+          example: caruka123;
+      required:
+        - email
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+    GetUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a3bd01ff-d852-42f9-8087-771c87376044
+        email:
+          type: string
+          example: elvizcacho@gmail.com
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    '503':
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+paths:
+  /login:
+    post:
+      summary: Logs into Evana's api
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: LogIn was successful and a token is provided
+          headers:
+            x-juaapp-jwt:
+              schema:
+                type: string
+              description: JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  /user:
+    get:
+      summary: Get user
+      operationId: getUser
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: User was successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'

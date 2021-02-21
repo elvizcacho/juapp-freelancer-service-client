@@ -1,0 +1,50 @@
+version: 2.1
+
+workflows:
+  npm_deploy:
+    jobs:
+      - build_and_publish:
+          filters:
+            branches:
+              only: master
+jobs:
+  build_and_publish:
+    working_directory: ~/app
+    docker:
+      - image: mhart/alpine-node:14.15.4
+    steps:
+      - run:
+          name: install git and ssh
+          command: apk update && apk add git && apk add openssh-client
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "fb:95:59:90:f7:0d:09:f7:c1:1c:c5:32:29:4c:06:b6"
+      - run:
+          name: npm install
+          command: npm install
+      - run:
+          name: fetch submodules
+          command: npm run schema:pull
+      - run:
+          name: is there new schema
+          command: npm run isThereNewVersion
+      - run:
+          name: copy new schema
+          command: npm run schema:copy
+      - run:
+          name: npm run build
+          command: npm run build
+      - run:
+          name: set up .npmrc
+          command: |
+            echo "registry=https://registry.npmjs.org/" >> .npmrc
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+            echo "always-auth=true" >> .npmrc
+      - run:
+          name: read .npmrc
+          command: cat .npmrc
+      - run:
+          name: npm publish
+          command: npm publish
+
