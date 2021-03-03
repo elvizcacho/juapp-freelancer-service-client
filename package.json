@@ -1,6 +1,6 @@
 {
   "name": "juapp-freelancer-service-client",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "freelancer service client",
   "main": "dist/index.ts",
   "files": [
